@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { GameEngine } from 'react-native-game-engine';
 import Matter from 'matter-js';
+import * as Font from 'expo-font';
 
 import Constants from './components/Constants';
 import { Bird, Floor } from './components/bodies';
@@ -14,7 +15,8 @@ export default class App extends Component {
     this.entities = this.setupWorld();
     this.state = {
       running: true,
-      score: 0
+      score: 0,
+      fontLoaded: false
     };
   }
 
@@ -64,7 +66,19 @@ export default class App extends Component {
     resetPipes()
   }
 
+  async componentDidMount() {
+    try {
+      await Font.loadAsync({'pixelate': require('./assets/fonts/04b_19.ttf')})
+      this.setState({fontLoaded: true});
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   render() {
+    if (!this.state.fontLoaded) {
+      return null
+    }
     return (
       <View style={styles.container}>
         <GameEngine
@@ -111,11 +125,13 @@ const styles = StyleSheet.create({
   },
   gameOverText: {
     color: "white",
-    fontSize: 48
+    fontSize: 48,
+    fontFamily: "pixelate"
   },
    score: {
      position: "absolute",
-     color: "grey",
+     fontFamily: "pixelate",
+     color: "white",
      fontSize: 72,
      top: 50,
      left: Constants.MAX_WIDTH / 2 - 20,
