@@ -111,6 +111,7 @@ export default class App extends Component {
           <TouchableOpacity onPress={this.reset}>
             <View style={styles.fullScreen}>
               <Text style={styles.gameOverText}>Game Over</Text>
+              <Text style={styles.gameOverSubText}>Try Again?</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -150,6 +151,11 @@ const styles = StyleSheet.create({
   gameOverText: {
     color: 'white',
     fontSize: 48,
+    fontFamily: 'pixelate',
+  },
+  gameOverSubText: {
+    color: 'white',
+    fontSize: 24,
     fontFamily: 'pixelate',
   },
   score: {

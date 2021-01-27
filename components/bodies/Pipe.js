@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
+
+import { pipeCore } from '../../assets/images';
 
 export default class Pipe extends Component {
   render() {
@@ -10,6 +12,9 @@ export default class Pipe extends Component {
     const x = position.x - width / 2;
     const y = position.y - height / 2;
 
+    const heightRatio = (width / 160) * 60;
+    const imageIteration = Math.ceil(height / heightRatio);
+
     return (
       <View
         style={{
@@ -18,9 +23,21 @@ export default class Pipe extends Component {
           left: x,
           width,
           height,
-          backgroundColor: this.props.color,
+          overflow: 'hidden',
+          flexDirection: 'column',
         }}
-      />
+      >
+        {Array.apply(null, Array(imageIteration)).map((el, idx) => {
+          return (
+            <Image
+              style={{ width: width, height: heightRatio }}
+              key={idx}
+              source={pipeCore}
+              resizeMode="stretch"
+            />
+          );
+        })}
+      </View>
     );
   }
 }

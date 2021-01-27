@@ -1,13 +1,14 @@
 import Matter from 'matter-js';
 import Constants from './Constants';
 
-import { Pipe } from './bodies';
+import { Pipe, PipeTop } from './bodies';
 
 let tick = 0;
 let pipes = 0;
 
 export const resetPipes = () => {
   pipes = 0;
+  tick = 0;
 };
 
 const randomBetween = (min, max) => {
@@ -31,7 +32,7 @@ const addPipesAtLocation = (x, world, entities) => {
   let [pipe1Height, pipe2Height] = generatePipes();
 
   const pipeTopWidth = Constants.PIPE_WIDTH + 20;
-  const pipeTopHeight = 50;
+  const pipeTopHeight = (pipeTopWidth / 206) * 94;
 
   pipe1Height = pipe1Height - pipeTopHeight;
 
@@ -77,8 +78,7 @@ const addPipesAtLocation = (x, world, entities) => {
   };
   entities['pipe' + (pipes + 1) + 'Top'] = {
     body: pipe1Top,
-    color: 'green',
-    renderer: Pipe,
+    renderer: PipeTop,
     scored: false,
   };
   entities['pipe' + (pipes + 2)] = {
@@ -89,8 +89,7 @@ const addPipesAtLocation = (x, world, entities) => {
   };
   entities['pipe' + (pipes + 2) + 'Top'] = {
     body: pipe2Top,
-    color: 'green',
-    renderer: Pipe,
+    renderer: PipeTop,
     scored: false,
   };
 
@@ -107,21 +106,21 @@ const Physics = (entities, { touches, time, dispatch }) => {
     .forEach((t) => {
       if (!hadTouch) {
         if (world.gravity.y === 0) {
-          world.gravity.y = 1.2;
+          world.gravity.y = 1.3;
           addPipesAtLocation(
-            Constants.MAX_WIDTH * 2 - Constants.MAX_WIDTH / 2,
+            Constants.MAX_WIDTH * 2 - Constants.PIPE_WIDTH / 2,
             world,
             entities
           );
           addPipesAtLocation(
-            Constants.MAX_WIDTH * 3 - Constants.MAX_WIDTH / 2,
+            Constants.MAX_WIDTH * 3 - Constants.PIPE_WIDTH / 2,
             world,
             entities
           );
         }
         Matter.Body.setVelocity(birdBody, {
           x: birdBody.velocity.x,
-          y: -8,
+          y: -10,
         });
         hadTouch = true;
       }
@@ -151,7 +150,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
           dispatch({ type: 'score' });
         }
 
-        if (entities[key].body.position.x <= -1 * (Constants.MAX_WIDTH / 2)) {
+        if (entities[key].body.position.x <= -1 * (Constants.PIPE_WIDTH / 2)) {
           const pipeIdx = parseInt(key.replace('pipe', ''));
 
           delete entities['pipe' + (pipeIdx - 1)];
@@ -160,7 +159,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
           delete entities['pipe' + pipeIdx + 'Top'];
 
           addPipesAtLocation(
-            Constants.MAX_WIDTH * 2 - Constants.MAX_WIDTH / 2,
+            Constants.MAX_WIDTH * 2 - Constants.PIPE_WIDTH / 2,
             world,
             entities
           );
