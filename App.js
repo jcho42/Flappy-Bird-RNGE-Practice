@@ -29,8 +29,8 @@ export default class App extends Component {
     const bird = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH / 2,
       Constants.MAX_HEIGHT / 2,
-      50,
-      50
+      Constants.BIRD_WIDTH,
+      Constants.BIRD_HEIGHT
     );
     const floor1 = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH / 2,
@@ -56,7 +56,7 @@ export default class App extends Component {
 
     return {
       physics: { engine, world },
-      bird: { body: bird, color: 'red', renderer: Bird },
+      bird: { body: bird, pose: 1, renderer: Bird },
       floor1: { body: floor1, renderer: Floor },
       floor2: { body: floor2, renderer: Floor },
     };

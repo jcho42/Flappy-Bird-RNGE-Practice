@@ -4,7 +4,6 @@ import Constants from './Constants';
 import { Pipe } from './bodies';
 
 let tick = 0;
-let pose = 1;
 let pipes = 0;
 
 export const resetPipes = () => {
@@ -100,7 +99,7 @@ const addPipesAtLocation = (x, world, entities) => {
 
 const Physics = (entities, { touches, time, dispatch }) => {
   const { engine, world } = entities.physics;
-  const bird = entities.bird.body;
+  const birdBody = entities.bird.body;
 
   let hadTouch = false;
   touches
@@ -120,8 +119,8 @@ const Physics = (entities, { touches, time, dispatch }) => {
             entities
           );
         }
-        Matter.Body.setVelocity(bird, {
-          x: bird.velocity.x,
+        Matter.Body.setVelocity(birdBody, {
+          x: birdBody.velocity.x,
           y: -8,
         });
         hadTouch = true;
@@ -129,6 +128,15 @@ const Physics = (entities, { touches, time, dispatch }) => {
     });
 
   Matter.Engine.update(engine, time.delta);
+
+  tick++;
+  const bird = entities.bird;
+  if (tick % 10 === 0) {
+    bird.pose++;
+    if (bird.pose > 3) {
+      bird.pose = 1;
+    }
+  }
 
   Object.keys(entities).forEach((key) => {
     if (key.includes('pipe') && entities.hasOwnProperty(key)) {
