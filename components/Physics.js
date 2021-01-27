@@ -144,7 +144,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
 
       if (!key.includes('Top') && parseInt(key.replace('pipe', '')) % 2 === 0) {
         if (
-          entities[key].body.position.x <= bird.position.x &&
+          entities[key].body.position.x <= birdBody.position.x &&
           !entities[key].scored
         ) {
           entities[key].scored = true;
@@ -165,6 +165,17 @@ const Physics = (entities, { touches, time, dispatch }) => {
             entities
           );
         }
+      }
+    }
+
+    if (key.includes('floor')) {
+      Matter.Body.translate(entities[key].body, { x: -2, y: 0 });
+
+      if (entities[key].body.position.x <= -1 * (Constants.MAX_WIDTH / 2)) {
+        Matter.Body.setPosition(entities[key].body, {
+          x: Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
+          y: entities[key].body.position.y,
+        });
       }
     }
   });
