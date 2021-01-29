@@ -153,6 +153,14 @@ const Physics = (entities, { touches, time, dispatch }) => {
         if (entities[key].body.position.x <= -1 * (Constants.PIPE_WIDTH / 2)) {
           const pipeIdx = parseInt(key.replace('pipe', ''));
 
+          Matter.World.remove(world, entities['pipe' + (pipeIdx - 1)].body);
+          Matter.World.remove(
+            world,
+            entities['pipe' + (pipeIdx - 1) + 'Top'].body
+          );
+          Matter.World.remove(world, entities['pipe' + pipeIdx].body);
+          Matter.World.remove(world, entities['pipe' + pipeIdx + 'Top'].body);
+
           delete entities['pipe' + (pipeIdx - 1)];
           delete entities['pipe' + (pipeIdx - 1) + 'Top'];
           delete entities['pipe' + pipeIdx];
