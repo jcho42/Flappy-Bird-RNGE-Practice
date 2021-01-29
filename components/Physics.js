@@ -106,7 +106,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
     .forEach((t) => {
       if (!hadTouch) {
         if (world.gravity.y === 0) {
-          world.gravity.y = 1.3;
+          world.gravity.y = 1.5;
           addPipesAtLocation(
             Constants.MAX_WIDTH * 2 - Constants.PIPE_WIDTH / 2,
             world,
@@ -139,7 +139,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
 
   Object.keys(entities).forEach((key) => {
     if (key.includes('pipe') && entities.hasOwnProperty(key)) {
-      Matter.Body.translate(entities[key].body, { x: -2, y: 0 });
+      Matter.Body.translate(entities[key].body, { x: -3, y: 0 });
 
       if (!key.includes('Top') && parseInt(key.replace('pipe', '')) % 2 === 0) {
         if (
@@ -176,7 +176,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
     }
 
     if (key.includes('floor')) {
-      Matter.Body.translate(entities[key].body, { x: -2, y: 0 });
+      Matter.Body.translate(entities[key].body, { x: -3, y: 0 });
 
       if (entities[key].body.position.x <= -1 * (Constants.MAX_WIDTH / 2)) {
         Matter.Body.setPosition(entities[key].body, {
