@@ -18,6 +18,7 @@ export default class App extends Component {
       running: true,
       score: 0,
       fontLoaded: false,
+      best: 0,
     };
   }
 
@@ -85,6 +86,12 @@ export default class App extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.state.score > this.state.best) {
+      this.setState({ best: this.state.score });
+    }
+  }
+
   render() {
     if (!this.state.fontLoaded) {
       return null;
@@ -106,10 +113,18 @@ export default class App extends Component {
           running={this.state.running}
           onEvent={this.onEvent}
         />
-        <Text style={styles.score}>{this.state.score}</Text>
+        {this.state.running && (
+          <Text style={styles.score}>{this.state.score}</Text>
+        )}
         {!this.state.running && (
           <TouchableOpacity onPress={this.reset}>
             <View style={styles.fullScreen}>
+              <View style={styles.gameOverScoreBackground}>
+                <Text style={styles.gameOverLabel}>Score</Text>
+                <Text style={styles.gameOverScore}>{this.state.score}</Text>
+                <Text style={styles.gameOverLabel}>Best</Text>
+                <Text style={styles.gameOverScore}>{this.state.best}</Text>
+              </View>
               <Text style={styles.gameOverText}>Game Over</Text>
               <Text style={styles.gameOverSubText}>Try Again?</Text>
             </View>
@@ -165,6 +180,28 @@ const styles = StyleSheet.create({
     fontSize: 72,
     top: 50,
     left: Constants.MAX_WIDTH / 2 - 20,
+    textShadowColor: 'black',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 2,
+  },
+  gameOverScoreBackground: {
+    backgroundColor: 'orange',
+    padding: 8,
+    margin: 10,
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  gameOverLabel: {
+    color: 'black',
+    fontFamily: 'pixelate',
+    fontSize: 24,
+  },
+  gameOverScore: {
+    color: 'white',
+    fontFamily: 'pixelate',
+    fontSize: 40,
     textShadowColor: 'black',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2,
